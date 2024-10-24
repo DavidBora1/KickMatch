@@ -22,10 +22,9 @@
 
 ## Tecnologie
 - **Frontend**: HTML, CSS, JavaScript
-- **Backend**: (da specificare in base a ciò che userai, ad esempio Node.js, Python, etc.)
-- **Database**: (ad esempio MySQL, MongoDB)
+- **Backend**: Node.js, Express.js
+- **Database**: SQLite
 - **API**: RESTful API per la gestione dei tornei, giocatori e notifiche
-- **Metodi di pagamento**: Integrazione con PayPal, Stripe, ecc.
 
 ## Funzionalità - Raccolta dei Requisiti per KickMatch
 
@@ -133,11 +132,3 @@
 - Visualizza il diagramma dei casi d'uso: ![Casi d'Uso KickMatch](https://yuml.me/b794db5f.svg)
 
 ---
-
-### Come contribuire
-Le pull request sono benvenute. Per modifiche importanti, apri prima una issue per discutere il cambiamento. Assicurati di aggiornare i test in base alle modifiche effettuate.
-
----
-
-### Licenza
-KickMatch è distribuito sotto licenza [MIT](LICENSE).
