@@ -2,6 +2,8 @@
 
 ## Descrizione
 **KickMatch** è un'app innovativa pensata per facilitare l'organizzazione e la partecipazione a partite di calcio amatoriale e tornei. La piattaforma offre un luogo centralizzato dove i giocatori di tutti i livelli possono trovare partite e tornei locali, unirsi a squadre, o organizzare eventi personalizzati. KickMatch semplifica la gestione delle squadre, la prenotazione dei campi e il coordinamento degli eventi, offrendo una soluzione completa per gli appassionati di calcio amatoriale.
+## Tag line
+**Un'app che collega squadre amatoriali e singoli giocatori per organizzare tornei e partite di calcio.**
 
 ## Target
 - Organizzatori di tornei di calcio amatoriale
@@ -25,6 +27,31 @@
 - **Backend**: Node.js, Express.js
 - **Database**: SQLite
 - **API**: RESTful API per la gestione dei tornei, giocatori e notifiche
+
+## Requisiti Iniziali
+**requisiti KickMatch:**
+
+-sito web
+creazione di un profilo personale (giocatore singolo), di squadra o società organizzatrice
+-dati del profilo giocatore singolo: nome, cognome, età, ruolo e residenza 
+-dati del profilo della squadra: nome squadra, membri residenza (campo facoltativo: ruolo/i richiesti se manca un giocatore)
+-dati società organizzatrice: nome società, residenza 
+
+interfaccia:
+
+interfaccia singolo: nella pagina iniziale vengono mostrati i tornei disponibili nella tua zona cliccando sopra uno di essi verranno mostrate le squadre partecipanti. Potrai fare richiesta di iscrizione al torneo da singolo dando disponibilità alle squadre che non sono al completo.
+
+-sezione notifiche di accettazione o rifiuto squadra nel caso in cui nessuna squadra ti abbia accettato
+-possibilità di iscriversi a più tornei purché non siano nello stesso giorno
+
+interfaccia squadra: nella pagina inizialmente come per il giocatore singolo vengono mostrati i tornei disponibili in zona con la differenza di poter far richiesta di iscrizione direttamente al torneo in base alla disponibilità.
+
+-sezione notifiche di accettazione o rifiuto torneo
+-possibilità di iscriversi a più tornei purché non siano nello stesso giorno
+-sezione di ricerca giocatori all'interno del torneo a cui si è iscritti, dove si ha la possibilità di fare richiesta ai giocatori singoli di far parte della propria squadra
+
+interfaccia società organizzatrice:
+nella pagina iniziale si avrà la possibilità di creare il torneo indicando i seguenti campi: tipo di torneo (es: calcio a 7, 9 , 11), limite di squadre, data inizio, fine e orario torneo"
 
 ## Funzionalità - Raccolta dei Requisiti per KickMatch
 
@@ -88,15 +115,11 @@
 - **Descrizione**: Gli utenti possono iscriversi a più tornei, purché non coincidano in date.
   - Tipo: **Funzionale**
 
-#### 2.9. Pagamenti Online per Iscrizione ai Tornei
-- **Descrizione**: Gli utenti possono pagare le iscrizioni online.
+#### 2.9. Classifiche e Risultati Torneo
+- **Descrizione**: Le classifiche e i risultati aggiornati.
   - Tipo: **Funzionale**
 
-#### 2.10. Classifiche e Risultati Torneo
-- **Descrizione**: Le classifiche e i risultati vengono aggiornati in tempo reale.
-  - Tipo: **Funzionale**
-
-#### 2.11. Revisione e Feedback su Squadre e Tornei
+#### 2.10. Revisione e Feedback su Squadre e Tornei
 - **Descrizione**: Gli utenti possono lasciare recensioni su squadre e tornei.
   - Tipo: **Funzionale**
 
@@ -106,23 +129,19 @@
 - **Descrizione**: Supporto fino a 1.000 utenti simultanei senza rallentamenti.
   - Tipo: **Non Funzionale**
 
-#### 3.2. Sicurezza dei Dati
-- **Descrizione**: Crittografia delle informazioni personali e delle transazioni.
-  - Tipo: **Non Funzionale**
-
-#### 3.3. Interfaccia Responsive
+#### 3.2. Interfaccia Responsive
 - **Descrizione**: Ottimizzata per dispositivi mobili, tablet e desktop.
   - Tipo: **Non Funzionale**
 
-#### 3.4. Usabilità
+#### 3.3. Usabilità
 - **Descrizione**: Interfaccia semplice e intuitiva, con percorsi di navigazione chiari.
   - Tipo: **Non Funzionale**
 
-#### 3.5. Tempi di Caricamento
+#### 3.4. Tempi di Caricamento
 - **Descrizione**: Le pagine devono caricarsi in meno di 2 secondi.
   - Tipo: **Non Funzionale**
 
-#### 3.6. Scalabilità
+#### 3.5. Scalabilità
 - **Descrizione**: Il sistema deve essere in grado di scalare in base al numero di utenti e tornei.
   - Tipo: **Non Funzionale**
 
