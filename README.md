@@ -29,29 +29,28 @@
 - **API**: RESTful API per la gestione dei tornei, giocatori e notifiche
 
 ## Requisiti Iniziali
-**requisiti KickMatch:**
+**Requisiti KickMatch:**
 
--sito web
-creazione di un profilo personale (giocatore singolo), di squadra o società organizzatrice
--dati del profilo giocatore singolo: nome, cognome, età, ruolo e residenza 
--dati del profilo della squadra: nome squadra, membri residenza (campo facoltativo: ruolo/i richiesti se manca un giocatore)
--dati società organizzatrice: nome società, residenza 
+- **Sito Web**
+Creazione di un profilo personale (giocatore singolo), di squadra o società organizzatrice
+- Dati del profilo giocatore singolo: nome, cognome, età, ruolo e residenza 
+- Dati del profilo della squadra: nome squadra, membri residenza (campo facoltativo: ruolo/i richiesti se manca un giocatore)
+- Dati società organizzatrice: nome società, residenza 
 
-interfaccia:
+- **Interfaccia:**
 
-interfaccia singolo: nella pagina iniziale vengono mostrati i tornei disponibili nella tua zona cliccando sopra uno di essi verranno mostrate le squadre partecipanti. Potrai fare richiesta di iscrizione al torneo da singolo dando disponibilità alle squadre che non sono al completo.
+- **Interfaccia singolo:** nella pagina iniziale vengono mostrati i tornei disponibili nella tua zona cliccando sopra uno di essi verranno mostrate le squadre partecipanti. Potrai fare richiesta di iscrizione al torneo da singolo dando disponibilità alle squadre che non sono al completo.
+- Sezione notifiche di accettazione o rifiuto squadra nel caso in cui nessuna squadra ti abbia accettato
+- Possibilità di iscriversi a più tornei purché non siano nello stesso giorno
 
--sezione notifiche di accettazione o rifiuto squadra nel caso in cui nessuna squadra ti abbia accettato
--possibilità di iscriversi a più tornei purché non siano nello stesso giorno
+- **Interfaccia squadra:** nella pagina inizialmente come per il giocatore singolo vengono mostrati i tornei disponibili in zona con la differenza di poter far richiesta di iscrizione direttamente al torneo in base alla disponibilità.
 
-interfaccia squadra: nella pagina inizialmente come per il giocatore singolo vengono mostrati i tornei disponibili in zona con la differenza di poter far richiesta di iscrizione direttamente al torneo in base alla disponibilità.
+- Sezione notifiche di accettazione o rifiuto torneo
+- Possibilità di iscriversi a più tornei purché non siano nello stesso giorno
+- Sezione di ricerca giocatori all'interno del torneo a cui si è iscritti, dove si ha la possibilità di fare richiesta ai giocatori singoli di far parte della propria squadra
 
--sezione notifiche di accettazione o rifiuto torneo
--possibilità di iscriversi a più tornei purché non siano nello stesso giorno
--sezione di ricerca giocatori all'interno del torneo a cui si è iscritti, dove si ha la possibilità di fare richiesta ai giocatori singoli di far parte della propria squadra
-
-interfaccia società organizzatrice:
-nella pagina iniziale si avrà la possibilità di creare il torneo indicando i seguenti campi: tipo di torneo (es: calcio a 7, 9 , 11), limite di squadre, data inizio, fine e orario torneo"
+- **Interfaccia società organizzatrice:**
+- Nella pagina iniziale si avrà la possibilità di creare il torneo indicando i seguenti campi: tipo di torneo (es: calcio a 7, 9 , 11), limite di squadre, data inizio, fine e orario torneo"
 
 ## Funzionalità - Raccolta dei Requisiti per KickMatch
 
