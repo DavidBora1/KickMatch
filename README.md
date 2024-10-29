@@ -31,13 +31,13 @@
 ## Requisiti Iniziali
 **Requisiti KickMatch:**
 
-- **Sito Web**
+**Sito Web**
 Creazione di un profilo personale (giocatore singolo), di squadra o società organizzatrice
 - Dati del profilo giocatore singolo: nome, cognome, età, ruolo e residenza 
 - Dati del profilo della squadra: nome squadra, membri residenza (campo facoltativo: ruolo/i richiesti se manca un giocatore)
 - Dati società organizzatrice: nome società, residenza 
 
-- **Interfaccia:**
+**Interfaccia:**
 
 - **Interfaccia singolo:** nella pagina iniziale vengono mostrati i tornei disponibili nella tua zona cliccando sopra uno di essi verranno mostrate le squadre partecipanti. Potrai fare richiesta di iscrizione al torneo da singolo dando disponibilità alle squadre che non sono al completo.
 - Sezione notifiche di accettazione o rifiuto squadra nel caso in cui nessuna squadra ti abbia accettato
