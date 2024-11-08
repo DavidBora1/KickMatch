@@ -1,0 +1,144 @@
+/* Reset di base per eliminare margini e padding */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #F3E5F5, #E1BEE7); /* Gradiente esotico */
+    color: #4A148C; /* Colore del testo principale */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    background-attachment: fixed; /* Sfondo fisso per effetto elegante */
+}
+
+/* Contenitore principale */
+.container {
+    background: #FFFFFF;
+    border-radius: 20px;
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    width: 100%;
+    max-width: 450px;
+    text-align: center;
+    animation: fadeIn 1s ease-in-out; /* Effetto fade-in */
+}
+
+/* Animazione per transizioni eleganti */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Stile per i titoli */
+h1 {
+    font-size: 2.8em;
+    margin-bottom: 25px;
+    color: #6A1B9A; /* Colore principale */
+}
+
+h2 {
+    font-size: 1.8em;
+    margin-bottom: 20px;
+    color: #8E24AA; /* Colore secondario */
+}
+
+/* Stile per i form */
+.form-container {
+    margin-bottom: 30px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="number"],
+input[type="password"] {
+    padding: 12px;
+    margin: 12px 0;
+    border: 2px solid #8E24AA; /* Bordo colorato */
+    border-radius: 8px;
+    background-color: #F3E5F5; /* Colore leggermente esotico per lo sfondo del campo */
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="number"]:focus,
+input[type="password"]:focus {
+    border-color: #D5006D; /* Colore al focus */
+    outline: none;
+    box-shadow: 0 0 8px rgba(213, 0, 109, 0.2); /* Ombra luminosa al focus */
+}
+
+/* Pulsante */
+button {
+    background-color: #D5006D; /* Colore del pulsante */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 12px;
+    cursor: pointer;
+    font-size: 1.1em;
+    font-weight: bold;
+    transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+    margin-top: 20px;
+}
+
+button:hover {
+    background-color: #C51162; /* Colore del pulsante al hover */
+    transform: translateY(-3px); /* Effetto sollevamento */
+    box-shadow: 0 8px 20px rgba(197, 17, 98, 0.3); /* Ombra per hover */
+}
+
+button:active {
+    transform: translateY(1px); /* Effetto pressione */
+    box-shadow: none;
+}
+
+#message {
+    margin-top: 20px;
+    font-weight: bold;
+    color: #E53935; /* Rosso per errori di default */
+    font-size: 1.2em; /* Assicurati che il testo sia abbastanza grande */
+    transition: color 0.3s;
+}
+
+/* Link per passare da login a registrazione */
+p a {
+    color: #6A1B9A;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+p a:hover {
+    color: #D5006D;
+}
+
+/* Responsività per dispositivi mobili */
+@media (max-width: 600px) {
+    h1 {
+        font-size: 2.2em;
+    }
+
+    h2 {
+        font-size: 1.6em;
+    }
+
+    .container {
+        padding: 30px;
+    }
+
+    button {
+        font-size: 1em;
+    }
+}

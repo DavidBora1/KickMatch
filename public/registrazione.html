@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KickMatch - Registrazione</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Registrati su KickMatch</h1>
+        <form id="registerForm">
+            <input type="text" id="nome" placeholder="Nome" required>
+            <input type="text" id="cognome" placeholder="Cognome" required>
+            <input type="number" id="eta" placeholder="Età" min="16" max="60" required>
+            <select id="ruolo_preferito" required>
+                <option value="" disabled selected>Seleziona Ruolo</option>
+                <option value="Portiere">Portiere</option>
+                <option value="Difensore">Difensore</option>
+                <option value="Centrocampista">Centrocampista</option>
+                <option value="Attaccante">Attaccante</option>
+            </select>
+            <input type="text" id="residenza" placeholder="Residenza" required>
+            <input type="email" id="email" placeholder="Email" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <input type="password" id="confirmPassword" placeholder="Conferma Password" required>
+            <button type="submit">Crea Account</button>
+        </form>
+        <div id="message"></div>
+        <p>Hai già un account? <a href="login.html">Accedi</a></p>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
