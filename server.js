@@ -3,15 +3,25 @@ const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
 const app = express();
 const port = 3000;
-
-app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
+
+// Imposta il percorso per i file statici
+app.use(express.static(path.join(__dirname, 'public')));
 
 let db = new sqlite3.Database('./database.db', (err) => {
     if (err) {
         return console.error(err.message);
     }
     console.log('Connesso al database SQLite.');
+});
+
+// Configura endpoint per le pagine HTML
+app.get('/tutti_calciatori', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'tutti_calciatori.html'));
+});
+
+app.get('/attaccanti', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'attaccanti.html'));
 });
 
 // Creazione tabella utenti se non esiste
@@ -75,6 +85,28 @@ app.post('/login', (req, res) => {
         }
 
         res.json({ message: 'Login avvenuto con successo', user: row });
+    });
+});
+
+app.get('/api/calciatori', (req, res) => {
+    const sql = 'SELECT * FROM utenti';
+    db.all(sql, [], (err, rows) => {
+        if (err) {
+            console.error('Errore nel recupero dei calciatori:', err);
+            return res.status(500).json({ error: 'Errore nel recupero dei calciatori' });
+        }
+        res.json(rows);
+    });
+});
+
+app.get('/api/attaccanti', (req, res) => {
+    const sql = 'SELECT * FROM utenti WHERE ruolo_preferito = ?';
+    db.all(sql, ['Attaccante'], (err, rows) => {
+        if (err) {
+            console.error('Errore nel recupero degli attaccanti:', err);
+            return res.status(500).json({ error: 'Errore nel recupero degli attaccanti' });
+        }
+        res.json(rows);
     });
 });
 

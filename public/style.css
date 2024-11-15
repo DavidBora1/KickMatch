@@ -142,3 +142,44 @@ p a:hover {
         font-size: 1em;
     }
 }
+.players-list {
+    margin-top: 20px;
+    text-align: left;
+}
+
+.players-list p {
+    background-color: #F3E5F5;
+    color: #6A1B9A;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+/* Contenitore per la lista dei calciatori */
+.players-list {
+    margin-top: 20px;
+    text-align: left;
+}
+
+.players-list p {
+    background-color: #F3E5F5;
+    color: #6A1B9A;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+/* Contenitore per la lista dei calciatori */
+.players-list {
+    margin-top: 20px;
+    text-align: left;
+}
+
+.players-list p {
+    background-color: #F3E5F5;
+    color: #6A1B9A;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
