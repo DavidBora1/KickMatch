@@ -77,7 +77,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-
     // Funzione per il login
     const loginForm = document.getElementById('loginForm');
     if (loginForm) {
@@ -117,10 +116,38 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
         });
     }
+
+    // Funzione per il logout
+    const logoutButton = document.getElementById('logoutButton');
+    if (logoutButton) {
+        logoutButton.addEventListener('click', function (event) {
+            event.preventDefault(); // Ferma il reindirizzamento
+
+            fetch('/logout', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    window.location.href = 'login.html'; // Redirect alla pagina di login
+                } else {
+                    console.error('Errore nel logout');
+                    alert('Errore durante il logout. Riprova.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Errore di comunicazione con il server.');
+            });
+        });
+    }
+
     console.log("script.js caricato correttamente");
 });
 
-
+// Funzione per la gestione dei calciatori
 document.addEventListener('DOMContentLoaded', function () {
     const playersContainer = document.getElementById('playersContainer');
 

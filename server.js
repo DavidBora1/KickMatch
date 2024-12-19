@@ -1,27 +1,47 @@
 const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
+const session = require('express-session');
 const app = express();
 const port = 3000;
 
+const swaggerJSDoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
+
+// Configurazione Swagger
+const options = {
+    swaggerDefinition: {
+        info: {
+            title: 'KickMatch API',
+            version: '1.0.0',
+            description: 'Documentazione delle API per KickMatch',
+        },
+        basePath: '/', // Percorso base delle tue API
+    },
+    apis: ['./*.js'], // Percorso dei file con le tue definizioni API
+};
+
+// Genera la documentazione Swagger
+const swaggerSpec = swaggerJSDoc(options);
+
+// Mostra la documentazione Swagger
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
 app.use(express.json());
-// Imposta il percorso per i file statici
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Configura sessione
+app.use(session({
+    secret: 'your-secret-key', // Chiave segreta per sessione
+    resave: false,
+    saveUninitialized: true
+}));
 
 let db = new sqlite3.Database('./database.db', (err) => {
     if (err) {
         return console.error(err.message);
     }
     console.log('Connesso al database SQLite.');
-});
-
-// Configura endpoint per le pagine HTML
-app.get('/tutti_calciatori', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'tutti_calciatori.html'));
-});
-
-app.get('/attaccanti', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'attaccanti.html'));
 });
 
 // Creazione tabella utenti se non esiste
@@ -65,7 +85,6 @@ app.post('/register', (req, res) => {
     });
 });
 
-
 // Login utente
 app.post('/login', (req, res) => {
     const { email, password } = req.body;
@@ -84,10 +103,27 @@ app.post('/login', (req, res) => {
             return res.json({ error: 'Credenziali errate' });
         }
 
+        req.session.user = row; // Salva l'utente in sessione
         res.json({ message: 'Login avvenuto con successo', user: row });
     });
 });
 
+// Logout utente
+app.post('/logout', (req, res) => {
+    if (req.session.user) {
+        req.session.destroy(err => {
+            if (err) {
+                return res.json({ error: 'Errore nel logout' });
+            }
+            res.redirect('/login.html'); // Redirect alla login page
+        });
+    } else {
+        res.json({ error: 'Utente non autenticato' });
+    }
+});
+
+
+// API per i calciatori
 app.get('/api/calciatori', (req, res) => {
     const sql = 'SELECT * FROM utenti';
     db.all(sql, [], (err, rows) => {

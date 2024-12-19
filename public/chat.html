@@ -1,0 +1,60 @@
+<!-- chat.html -->
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KickMatch - Chat</title>
+</head>
+<body>
+    <h1>Chat</h1>
+    <div id="messaggi"></div>
+    <textarea id="messaggio" placeholder="Scrivi un messaggio..."></textarea>
+    <button id="invia">Invia</button>
+
+    <script>
+        const utenteId = 1; // ID utente loggato (da sostituire con quello dinamico)
+        const destinatarioId = 2; // ID del destinatario (da selezionare dinamicamente)
+
+        function caricaMessaggi() {
+            fetch(`/messaggi/${utenteId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const messaggiDiv = document.getElementById('messaggi');
+                        messaggiDiv.innerHTML = '';
+                        data.messaggi.forEach(msg => {
+                            const p = document.createElement('p');
+                            p.textContent = `${msg.mittente_nome} ${msg.mittente_cognome}: ${msg.messaggio}`;
+                            messaggiDiv.appendChild(p);
+                        });
+                    } else {
+                        alert('Errore nel caricamento dei messaggi.');
+                    }
+                });
+        }
+
+        document.getElementById('invia').addEventListener('click', () => {
+            const messaggio = document.getElementById('messaggio').value;
+            if (messaggio.trim() !== '') {
+                fetch('/invia-messaggio', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ mittente_id: utenteId, destinatario_id: destinatarioId, messaggio })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById('messaggio').value = '';
+                        caricaMessaggi();
+                    } else {
+                        alert('Errore durante l\'invio del messaggio.');
+                    }
+                });
+            }
+        });
+
+        caricaMessaggi();
+    </script>
+</body>
+</html>
