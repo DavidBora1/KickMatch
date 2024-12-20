@@ -146,6 +146,7 @@ app.get('/api/attaccanti', (req, res) => {
     });
 });
 
+
 // Avvio server
 app.listen(port, () => {
     console.log(`Server in ascolto su http://localhost:${port}`);

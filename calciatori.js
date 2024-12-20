@@ -45,6 +45,7 @@ router.get('/calciatori', (req, res) => {
         if (err) {
             return res.status(500).json({ error: 'Errore nel recupero dei calciatori' });
         }
+        
         res.json(rows);
     });
 });
