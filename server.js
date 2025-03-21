@@ -23,11 +23,6 @@ app.use(cors({
   credentials: true // Consente l'invio di cookie cross-origin
 }));
 
-// Ottieni l'URL di base dinamicamente
-const getBaseUrl = (req) => {
-  return `${req.protocol}://${req.get('host')}`;
-};
-
 // Configurazione Swagger
 const options = {
   swaggerDefinition: {
@@ -209,7 +204,7 @@ function startServer() {
     });
   });
 
-  // Login utente
+  // Login utente - Modificato per gestire il redirect admin
   app.post('/login', (req, res) => {
     const { email, password } = req.body;
 
@@ -228,7 +223,14 @@ function startServer() {
       }
 
       req.session.user = row; // Salva l'utente in sessione
-      res.json({ message: 'Login avvenuto con successo', user: row });
+      
+      console.log('Login effettuato:', row); // Log per debug
+      
+      res.json({ 
+        success: true,
+        message: 'Login avvenuto con successo', 
+        user: row
+      });
     });
   });
 
@@ -239,11 +241,85 @@ function startServer() {
         if (err) {
           return res.json({ error: 'Errore nel logout' });
         }
-        res.redirect('/login.html');
+        res.json({ success: true });
       });
     } else {
       res.json({ error: 'Utente non autenticato' });
     }
+  });
+
+  // Rotta per verificare la sessione (debug)
+  app.get('/check-session', (req, res) => {
+    res.json({
+      sessionUser: req.session.user,
+      passportUser: req.user
+    });
+  });
+  
+  // Rotta per verificare l'account admin (debug)
+  app.get('/check-admin', (req, res) => {
+    db.get('SELECT * FROM utenti WHERE email = "admin@kickmatch.com"', [], (err, row) => {
+      if (err) return res.json({ error: err.message });
+      res.json(row);
+    });
+  });
+
+  // Rotta per servire la pagina admin con log per debug
+  app.get('/admin', (req, res) => {
+    // Controlla se l'utente è autenticato e admin
+    const user = req.session.user || req.user;
+    console.log('Utente che accede a /admin:', user); // Log per debug
+    
+    if (!user) {
+      console.log('Utente non autenticato');
+      return res.redirect('/login.html');
+    }
+    
+    if (user.is_admin !== 1) {
+      console.log('Utente non è admin:', user.is_admin);
+      return res.redirect('/login.html');
+    }
+    
+    console.log('Accesso admin consentito');
+    res.sendFile(path.join(__dirname, 'public', 'admin.html'));
+  });
+
+  // Rotta per ottenere i dettagli di un utente
+  app.get('/api/admin/users/:id', (req, res) => {
+    const user = req.session.user || req.user;
+    if (!user || user.is_admin !== 1) {
+      return res.status(403).json({ error: 'Accesso negato' });
+    }
+    
+    const userId = req.params.id;
+    db.get('SELECT * FROM utenti WHERE id = ?', [userId], (err, row) => {
+      if (err) {
+        return res.status(500).json({ error: 'Errore nel recupero dell\'utente' });
+      }
+      if (!row) {
+        return res.status(404).json({ error: 'Utente non trovato' });
+      }
+      res.json(row);
+    });
+  });
+
+  // Rotta per ottenere i dettagli di un utente Google
+  app.get('/api/admin/google-users/:id', (req, res) => {
+    const user = req.session.user || req.user;
+    if (!user || user.is_admin !== 1) {
+      return res.status(403).json({ error: 'Accesso negato' });
+    }
+    
+    const userId = req.params.id;
+    db.get('SELECT * FROM utenti_google WHERE id = ?', [userId], (err, row) => {
+      if (err) {
+        return res.status(500).json({ error: 'Errore nel recupero dell\'utente Google' });
+      }
+      if (!row) {
+        return res.status(404).json({ error: 'Utente Google non trovato' });
+      }
+      res.json(row);
+    });
   });
   
   // Condividi il database con le rotte dei calciatori
@@ -256,6 +332,7 @@ function startServer() {
   app.listen(port, () => {
     console.log(`Server in ascolto su http://localhost:${port}`);
     console.log(`Swagger disponibile su https://ideal-space-succotash-vx76p9xvxx5cwwx7-3000.app.github.dev/api-docs`);
+    console.log(`Pannello admin disponibile su https://ideal-space-succotash-vx76p9xvxx5cwwx7-3000.app.github.dev/admin`);
   });
 }
 

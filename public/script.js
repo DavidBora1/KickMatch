@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Funzione per il login
+    // Funzione per il login - MODIFICATA per gestire il redirect admin
     const loginForm = document.getElementById('loginForm');
     if (loginForm) {
         loginForm.addEventListener('submit', function (event) {
@@ -105,7 +105,19 @@ document.addEventListener('DOMContentLoaded', function () {
                     } else {
                         messageElement.innerText = `Bentornato ${data.user.nome}!`; // Messaggio di benvenuto
                         messageElement.style.color = '#4CAF50'; // Colore verde per successi
-                        // Redirect o altre azioni possono essere aggiunti qui
+                        
+                        // Redirect in base al tipo di utente
+                        if (data.user.is_admin === 1) {
+                            console.log('Utente admin, redirect a /admin');
+                            setTimeout(() => {
+                                window.location.href = '/admin'; // Redirect al pannello admin
+                            }, 1000);
+                        } else {
+                            console.log('Utente standard, redirect a index.html');
+                            setTimeout(() => {
+                                window.location.href = '/index.html'; // Redirect alla home
+                            }, 1000);
+                        }
                     }
                 })
                 .catch(error => {
