@@ -1,39 +1,39 @@
-<!DOCTYPE html>
-<html lang="it">
+    <!DOCTYPE html>
+    <html lang="it">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KickMatch - Benvenuto</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="/socket.io/socket.io.js"></script>
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>KickMatch - Benvenuto</title>
+        <link rel="stylesheet" href="style.css">
+        <script src="/socket.io/socket.io.js"></script>
+    </head>
 
-<body>
-    <div class="container">
-        <h1>Benvenuto su KickMatch</h1>
-        <p>L'applicazione che ti permette di organizzare e partecipare a partite e tornei di calcio amatoriali.</p>
+    <body>
+        <div class="container">
+            <h1>Benvenuto su KickMatch</h1>
+            <p>L'applicazione che ti permette di organizzare e partecipare a partite e tornei di calcio amatoriali.</p>
 
-        <!-- Pulsanti per Accedi e Registrati -->
-        <div class="action-buttons">
-            <button onclick="window.location.href='login.html'">Accedi</button>
-            <button onclick="window.location.href='registrazione.html'">Registrati</button>
+            <!-- Pulsanti per Accedi e Registrati -->
+            <div class="action-buttons">
+                <button onclick="window.location.href='login.html'">Accedi</button>
+                <button onclick="window.location.href='registrazione.html'">Registrati</button>
+            </div>
+
+            <!-- Pulsanti AJAX per Visualizzare Calciatori -->
+            <div class="action-buttons">
+                <button id="fetchAllPlayers">Visualizza Tutti i Calciatori</button>
+                <button id="fetchAttackers">Visualizza Solo Attaccanti</button>
+            </div>
+
+            <!-- Contenitore Risultati AJAX -->
+            <div id="playersContainer" class="players-list">
+                <p>Seleziona un'opzione per visualizzare i calciatori.</p>
+            </div>
         </div>
 
-        <!-- Pulsanti AJAX per Visualizzare Calciatori -->
-        <div class="action-buttons">
-            <button id="fetchAllPlayers">Visualizza Tutti i Calciatori</button>
-            <button id="fetchAttackers">Visualizza Solo Attaccanti</button>
-        </div>
+        <!-- Collegamento a script.js per le funzionalità AJAX -->
+        <script src="script.js"></script>
+    </body>
 
-        <!-- Contenitore Risultati AJAX -->
-        <div id="playersContainer" class="players-list">
-            <p>Seleziona un'opzione per visualizzare i calciatori.</p>
-        </div>
-    </div>
-
-    <!-- Collegamento a script.js per le funzionalità AJAX -->
-    <script src="script.js"></script>
-</body>
-
-</html>
+    </html>

@@ -17,6 +17,21 @@ body {
     background-attachment: fixed; /* Sfondo fisso per effetto elegante */
 }
 
+.google-login {
+    background-color: #4285F4;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-size: 1.1em;
+    cursor: pointer;
+    margin-top: 20px;
+}
+.google-login:hover {
+    background-color: #357AE8;
+}
+
+
 /* Contenitore principale */
 .container {
     background: #FFFFFF;
