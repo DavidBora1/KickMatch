@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KickMatch - Portale Calcio</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 30px;
+        }
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #4CAF50;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        .welcome-card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 30px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        h1, h2, h3 {
+            color: #4CAF50;
+        }
+        .btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+        }
+        .btn:hover {
+            background-color: #45a049;
+        }
+        .btn-secondary {
+            background-color: #f1f1f1;
+            color: #333;
+        }
+        .btn-secondary:hover {
+            background-color: #ddd;
+        }
+        .tab-navigation {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 20px;
+        }
+        .tab-btn {
+            padding: 10px 20px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-size: 16px;
+            position: relative;
+        }
+        .tab-btn.active {
+            color: #4CAF50;
+            font-weight: bold;
+        }
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: #4CAF50;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .loading {
+            text-align: center;
+            padding: 30px;
+            color: #666;
+            font-style: italic;
+        }
+        .error {
+            background-color: #ffebee;
+            color: #c62828;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+        .team-list, .match-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .team-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            transition: transform 0.2s;
+        }
+        .team-card:hover {
+            transform: translateY(-5px);
+        }
+        .team-logo {
+            width: 100px;
+            height: 100px;
+            object-fit: contain;
+            margin-bottom: 15px;
+        }
+        .team-name {
+            font-weight: bold;
+            font-size: 18px;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .match-card {
+            display: flex;
+            flex-direction: column;
+            padding: 15px;
+        }
+        .match-date {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        .match-teams {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .match-team {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 40%;
+        }
+        .match-logo {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+            margin-bottom: 5px;
+        }
+        .match-score {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            font-size: 24px;
+            width: 20%;
+        }
+        .match-info {
+            text-align: center;
+            margin-top: 10px;
+            color: #666;
+        }
+        .league-selector {
+            margin-bottom: 20px;
+        }
+        .league-selector select {
+            padding: 8px 15px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            font-size: 16px;
+            min-width: 200px;
+        }
+        .weather-card {
+            text-align: center;
+            padding: 20px;
+            margin-bottom: 20px;
+            background-color: #e8f5e9;
+            border-radius: 8px;
+        }
+        .weather-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 10px;
+        }
+        .weather-temp {
+            font-size: 36px;
+            font-weight: bold;
+            color: #4CAF50;
+            margin-bottom: 10px;
+        }
+        .standings-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .standings-table th, .standings-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        .standings-table th {
+            background-color: #f5f5f5;
+            font-weight: bold;
+        }
+        .standings-table tr:hover {
+            background-color: #f9f9f9;
+        }
+        .team-position {
+            font-weight: bold;
+            width: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>KickMatch</h1>
+            <div class="user-info">
+                <div class="user-avatar" id="user-initial">U</div>
+                <span id="user-name">Utente</span>
+                <a href="/admin" id="admin-link" class="btn" style="margin-left: 10px; display: none;">Admin</a>
+                <a href="/logout" class="btn btn-secondary" style="margin-left: 15px;">Logout</a>
+            </div>
+        </div>
+
+        <div class="welcome-card">
+            <h2>Benvenuto nel Portale Calcio</h2>
+            <p>Scopri le ultime novità sul mondo del calcio, classifiche, partite e squadre.</p>
+        </div>
+
+        <div class="tab-navigation">
+            <button class="tab-btn active" data-tab="matches">Partite</button>
+            <button class="tab-btn" data-tab="teams">Squadre</button>
+            <button class="tab-btn" data-tab="standings">Classifiche</button>
+        </div>
+
+        <div id="matches" class="tab-content active">
+            <div class="league-selector">
+                <label for="match-league-select">Seleziona una competizione: </label>
+                <select id="match-league-select">
+                    <option value="SA">Serie A</option>
+                    <option value="PL">Premier League</option>
+                    <option value="BL1">Bundesliga</option>
+                    <option value="PD">LaLiga</option>
+                    <option value="FL1">Ligue 1</option>
+                </select>
+                <button id="load-matches" class="btn">Carica partite</button>
+            </div>
+            <div id="weather-container"></div>
+            <div id="matches-container">
+                <div class="loading">Caricamento partite...</div>
+            </div>
+        </div>
+
+        <div id="teams" class="tab-content">
+            <div class="league-selector">
+                <label for="team-league-select">Seleziona una competizione: </label>
+                <select id="team-league-select">
+                    <option value="SA">Serie A</option>
+                    <option value="PL">Premier League</option>
+                    <option value="BL1">Bundesliga</option>
+                    <option value="PD">LaLiga</option>
+                    <option value="FL1">Ligue 1</option>
+                </select>
+                <button id="load-teams" class="btn">Carica squadre</button>
+            </div>
+            <div id="teams-container">
+                <div class="loading">Caricamento squadre...</div>
+            </div>
+        </div>
+
+        <div id="standings" class="tab-content">
+            <div class="league-selector">
+                <label for="standings-league-select">Seleziona una competizione: </label>
+                <select id="standings-league-select">
+                    <option value="SA">Serie A</option>
+                    <option value="PL">Premier League</option>
+                    <option value="BL1">Bundesliga</option>
+                    <option value="PD">LaLiga</option>
+                    <option value="FL1">Ligue 1</option>
+                </select>
+                <button id="load-standings" class="btn">Carica classifica</button>
+            </div>
+            <div id="standings-container">
+                <div class="loading">Caricamento classifica...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // API KEY per Football-data.org
+        const API_KEY = '7830c352850e4acda9c3f3557db2764e';
+        
+        // Riferimenti ai contenitori
+        const matchesContainer = document.getElementById('matches-container');
+        const teamsContainer = document.getElementById('teams-container');
+        const standingsContainer = document.getElementById('standings-container');
+        const weatherContainer = document.getElementById('weather-container');
+        
+        // Inizializzazione
+        document.addEventListener('DOMContentLoaded', function() {
+            // Verifica autenticazione
+            checkAuthentication();
+            
+            // Configura tabs
+            setupTabs();
+            
+            // Carica dati iniziali
+            loadMatches('SA');
+            
+            // Configura event listeners
+            document.getElementById('load-matches').addEventListener('click', () => {
+                const leagueCode = document.getElementById('match-league-select').value;
+                loadMatches(leagueCode);
+            });
+            
+            document.getElementById('load-teams').addEventListener('click', () => {
+                const leagueCode = document.getElementById('team-league-select').value;
+                loadTeams(leagueCode);
+            });
+            
+            document.getElementById('load-standings').addEventListener('click', () => {
+                const leagueCode = document.getElementById('standings-league-select').value;
+                loadStandings(leagueCode);
+            });
+            
+            // Carica meteo per città italiana
+            loadWeather('Milan');
+        });
+        
+        // Verifica autenticazione
+        function checkAuthentication() {
+            fetch('/check-session')
+                .then(response => response.json())
+                .then(data => {
+                    if (!data.isAuthenticated) {
+                        window.location.href = '/login.html';
+                        return;
+                    }
+                    
+                    // Aggiorna UI con dati utente
+                    const user = data.passportUser;
+                    document.getElementById('user-name').textContent = user.nome;
+                    document.getElementById('user-initial').textContent = user.nome.charAt(0);
+                    
+                    // Mostra link admin se necessario
+                    if (user.is_admin === 1) {
+                        document.getElementById('admin-link').style.display = 'inline-block';
+                    }
+                })
+                .catch(error => {
+                    console.error('Errore nel controllo autenticazione:', error);
+                    window.location.href = '/login.html';
+                });
+        }
+        
+        // Configura i tabs
+        function setupTabs() {
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const tabId = button.getAttribute('data-tab');
+                    
+                    // Rimuovi la classe active da tutti i tab
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    
+                    // Aggiungi la classe active al tab selezionato
+                    button.classList.add('active');
+                    document.getElementById(tabId).classList.add('active');
+                    
+                    // Carica dati se necessario
+                    if (tabId === 'teams' && teamsContainer.innerHTML.includes('Caricamento')) {
+                        loadTeams('SA');
+                    } else if (tabId === 'standings' && standingsContainer.innerHTML.includes('Caricamento')) {
+                        loadStandings('SA');
+                    }
+                });
+            });
+        }
+        
+// Carica le partite
+function loadMatches(leagueCode) {
+    matchesContainer.innerHTML = '<div class="loading">Caricamento partite...</div>';
+    
+    fetch(`/api/football/matches/${leagueCode}`)
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Errore nel caricamento delle partite');
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (!data.matches || data.matches.length === 0) {
+            matchesContainer.innerHTML = '<div class="card">Nessuna partita programmata per questa competizione.</div>';
+            return;
+        }
+        
+        // Filtra per mostrare solo le prossime 10 partite
+        const matches = data.matches.slice(0, 10);
+        
+        const matchesHTML = `
+            <h3>Prossime partite - ${getLeagueName(leagueCode)}</h3>
+            <div class="match-list">
+                ${matches.map(match => `
+                    <div class="card match-card">
+                        <div class="match-date">${formatDate(match.utcDate)}</div>
+                        <div class="match-teams">
+                            <div class="match-team">
+                                <img src="${getTeamLogo(match.homeTeam.id)}" alt="${match.homeTeam.name}" class="match-logo">
+                                <div>${match.homeTeam.name}</div>
+                            </div>
+                            <div class="match-score">vs</div>
+                            <div class="match-team">
+                                <img src="${getTeamLogo(match.awayTeam.id)}" alt="${match.awayTeam.name}" class="match-logo">
+                                <div>${match.awayTeam.name}</div>
+                            </div>
+                        </div>
+                        <div class="match-info">
+                            ${match.venue ? `Stadio: ${match.venue}` : ''}
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+        `;
+        
+        matchesContainer.innerHTML = matchesHTML;
+    })
+    .catch(error => {
+        console.error('Errore:', error);
+        matchesContainer.innerHTML = `
+            <div class="error">
+                Errore nel caricamento delle partite. Riprova più tardi.
+            </div>
+        `;
+    });
+}
+
+// Carica le squadre
+function loadTeams(leagueCode) {
+    teamsContainer.innerHTML = '<div class="loading">Caricamento squadre...</div>';
+    
+    fetch(`/api/football/teams/${leagueCode}`)
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Errore nel caricamento delle squadre');
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (!data.teams || data.teams.length === 0) {
+            teamsContainer.innerHTML = '<div class="card">Nessuna squadra trovata per questa competizione.</div>';
+            return;
+        }
+        
+        const teamsHTML = `
+            <h3>Squadre - ${getLeagueName(leagueCode)}</h3>
+            <div class="team-list">
+                ${data.teams.map(team => `
+                    <div class="card team-card">
+                        <img src="${team.crestUrl || getTeamLogo(team.id)}" alt="${team.name}" class="team-logo">
+                        <div class="team-name">${team.name}</div>
+                        <div>Fondazione: ${team.founded || 'N/A'}</div>
+                        <div>Stadio: ${team.venue || 'N/A'}</div>
+                        ${team.website ? `<a href="${team.website}" target="_blank" class="btn btn-secondary" style="margin-top: 10px;">Sito Web</a>` : ''}
+                    </div>
+                `).join('')}
+            </div>
+        `;
+        
+        teamsContainer.innerHTML = teamsHTML;
+    })
+    .catch(error => {
+        console.error('Errore:', error);
+        teamsContainer.innerHTML = `
+            <div class="error">
+                Errore nel caricamento delle squadre. Riprova più tardi.
+            </div>
+        `;
+    });
+}
+
+// Carica le classifiche
+function loadStandings(leagueCode) {
+    standingsContainer.innerHTML = '<div class="loading">Caricamento classifica...</div>';
+    
+    fetch(`/api/football/standings/${leagueCode}`)
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Errore nel caricamento della classifica');
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (!data.standings || data.standings.length === 0) {
+            standingsContainer.innerHTML = '<div class="card">Nessuna classifica disponibile per questa competizione.</div>';
+            return;
+        }
+        
+        // Prendi la classifica totale (non solo home o away)
+        const standing = data.standings.find(s => s.type === 'TOTAL') || data.standings[0];
+        
+        const standingsHTML = `
+            <h3>Classifica - ${getLeagueName(leagueCode)}</h3>
+            <div class="card">
+                <table class="standings-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Squadra</th>
+                            <th>PG</th>
+                            <th>V</th>
+                            <th>P</th>
+                            <th>S</th>
+                            <th>GF</th>
+                            <th>GS</th>
+                            <th>DR</th>
+                            <th>Punti</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${standing.table.map(row => `
+                            <tr>
+                                <td class="team-position">${row.position}</td>
+                                <td>
+                                    <div style="display: flex; align-items: center;">
+                                        <img src="${row.team.crestUrl || getTeamLogo(row.team.id)}" alt="${row.team.name}" style="width: 20px; height: 20px; margin-right: 10px;">
+                                        ${row.team.name}
+                                    </div>
+                                </td>
+                                <td>${row.playedGames}</td>
+                                <td>${row.won}</td>
+                                <td>${row.draw}</td>
+                                <td>${row.lost}</td>
+                                <td>${row.goalsFor}</td>
+                                <td>${row.goalsAgainst}</td>
+                                <td>${row.goalDifference}</td>
+                                <td><strong>${row.points}</strong></td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            </div>
+        `;
+        
+        standingsContainer.innerHTML = standingsHTML;
+    })
+    .catch(error => {
+        console.error('Errore:', error);
+        standingsContainer.innerHTML = `
+            <div class="error">
+                Errore nel caricamento della classifica. Riprova più tardi.
+            </div>
+        `;
+    });
+}
+
+// Carica il meteo per una città
+function loadWeather(city) {
+    weatherContainer.innerHTML = ''; // Pulisci il contenitore
+    
+    fetch(`/api/weather/${city}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Città non trovata');
+            }
+            return response.json();
+        })
+        .then(data => {
+            const weatherHTML = `
+                <div class="weather-card">
+                    <h3>Meteo a ${data.name} oggi</h3>
+                    <img src="https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png" alt="${data.weather[0].description}" class="weather-icon">
+                    <div class="weather-temp">${Math.round(data.main.temp)}°C</div>
+                    <div>${data.weather[0].description}</div>
+                    <div>Umidità: ${data.main.humidity}% | Vento: ${data.wind.speed} m/s</div>
+                    <p>Condizioni per giocare a calcio: ${getPlayingCondition(data.main.temp, data.weather[0].main)}</p>
+                </div>
+            `;
+            weatherContainer.innerHTML = weatherHTML;
+        })
+        .catch(error => {
+            console.log('Errore meteo:', error);
+            // Non mostrare errori, semplicemente non mostrare il meteo
+        });
+}
+        
+        // Carica il meteo per una città
+        function loadWeather(city) {
+            weatherContainer.innerHTML = ''; // Pulisci il contenitore
+            
+            fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=25a51f4df5e1d6c2be2d59f2fa8e7b37&lang=it`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Città non trovata');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const weatherHTML = `
+                        <div class="weather-card">
+                            <h3>Meteo a ${data.name} oggi</h3>
+                            <img src="https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png" alt="${data.weather[0].description}" class="weather-icon">
+                            <div class="weather-temp">${Math.round(data.main.temp)}°C</div>
+                            <div>${data.weather[0].description}</div>
+                            <div>Umidità: ${data.main.humidity}% | Vento: ${data.wind.speed} m/s</div>
+                            <p>Condizioni per giocare a calcio: ${getPlayingCondition(data.main.temp, data.weather[0].main)}</p>
+                        </div>
+                    `;
+                    weatherContainer.innerHTML = weatherHTML;
+                })
+                .catch(error => {
+                    console.log('Errore meteo:', error);
+                    // Non mostrare errori, semplicemente non mostrare il meteo
+                });
+        }
+        
+        // Helper per ottenere il nome della lega
+        function getLeagueName(code) {
+            const leagues = {
+                'SA': 'Serie A',
+                'PL': 'Premier League',
+                'BL1': 'Bundesliga',
+                'PD': 'LaLiga',
+                'FL1': 'Ligue 1'
+            };
+            return leagues[code] || code;
+        }
+        
+        // Helper per formattare le date
+        function formatDate(dateString) {
+            const options = { 
+                weekday: 'long', 
+                day: 'numeric', 
+                month: 'long', 
+                hour: '2-digit', 
+                minute: '2-digit' 
+            };
+            return new Date(dateString).toLocaleDateString('it-IT', options);
+        }
+        
+        // Helper per ottenere un logo di squadra di fallback
+        function getTeamLogo(teamId) {
+            return `https://crests.football-data.org/${teamId}.svg`;
+        }
+        
+        // Helper per valutare le condizioni di gioco
+        function getPlayingCondition(temp, weather) {
+            if (temp < 5) return "❄️ Troppo freddo, meglio guardare dalla TV!";
+            if (temp > 30) return "🔥 Molto caldo, idratarsi frequentemente";
+            if (weather === 'Rain' || weather === 'Thunderstorm') return "☔ Pioggia: campo scivoloso, attenzione!";
+            if (temp >= 15 && temp <= 25 && (weather === 'Clear' || weather === 'Clouds')) 
+                return "✅ Condizioni ideali per una partita!";
+            return "👍 Condizioni accettabili per il calcio";
+        }
+    </script>
+</body>
+</html>
