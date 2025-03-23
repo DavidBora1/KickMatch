@@ -13,8 +13,8 @@ Per utilizzare l'autenticazione Google OAuth, è necessario impostare le seguent
 
 Puoi impostare queste variabili direttamente nel comando docker run oppure creare un file .env nella radice del progetto con questo contenuto:
 
-GOOGLE_CLIENT_ID=975436346259-i2rlgtgeoq9nkb7sf15pdl4hq899vt46.apps.googleusercontent.com
-GOOGLE_CLIENT_SECRET=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
+GOOGLE_CLIENT_ID=API_KEY
+GOOGLE_CLIENT_SECRET=API_KEY
 
 # Costruzione dell'Immagine Docker
 Posizionati nella directory del progetto e costruisci l'immagine Docker con il seguente comando:
