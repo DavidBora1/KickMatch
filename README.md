@@ -1,5 +1,53 @@
 # KickMatch
 
+# Prerequisiti
+- Docker: Assicurati di avere Docker installato sul tuo sistema.
+- (Opzionale) Docker Compose: Se preferisci gestire il container tramite Docker Compose.
+
+# Configurazione delle Variabili d'Ambiente
+Per utilizzare l'autenticazione Google OAuth, è necessario impostare le seguenti variabili d'ambiente:
+
+- GOOGLE_CLIENT_ID
+
+- GOOGLE_CLIENT_SECRET
+
+Puoi impostare queste variabili direttamente nel comando docker run oppure creare un file .env nella radice del progetto con questo contenuto:
+
+GOOGLE_CLIENT_ID=975436346259-i2rlgtgeoq9nkb7sf15pdl4hq899vt46.apps.googleusercontent.com
+GOOGLE_CLIENT_SECRET=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
+
+# Costruzione dell'Immagine Docker
+Posizionati nella directory del progetto e costruisci l'immagine Docker con il seguente comando:
+
+docker build -t kickmatch .
+
+# Avvio del Container
+Utilizzo del comando docker run
+Avvia il container passando le variabili d'ambiente:
+
+docker run -d --name kickmatch-container -p 3000:3000 \
+  -e GOOGLE_CLIENT_ID=975436346259-i2rlgtgeoq9nkb7sf15pdl4hq899vt46.apps.googleusercontent.com \
+  -e GOOGLE_CLIENT_SECRET=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 \
+  kickmatch
+
+# Utilizzo di Docker Compose (Opzionale)
+Se preferisci utilizzare Docker Compose, crea un file docker-compose.yml con il seguente contenuto:
+
+services:
+  kickmatch:
+    image: kickmatch
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+
+Avvia il container con:
+
+docker-compose up -d
+
+# Verifica
+Apri il browser e visita http://localhost:3000/ per verificare che l'applicazione sia in esecuzione correttamente.
+
 ## Descrizione
 **KickMatch** è un'app innovativa pensata per facilitare l'organizzazione e la partecipazione a partite di calcio amatoriale e tornei. La piattaforma offre un luogo centralizzato dove i giocatori di tutti i livelli possono trovare partite e tornei locali, unirsi a squadre, o organizzare eventi personalizzati. KickMatch semplifica la gestione delle squadre, la prenotazione dei campi e il coordinamento degli eventi, offrendo una soluzione completa per gli appassionati di calcio amatoriale.
 ## Tag line
