@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{title}}</title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="stylesheet" href="/css/api-dashboard.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <div class="dashboard-container">
+    <div class="dashboard-header">
+      <h1>API Dashboard</h1>
+      <nav>
+        <a href="/"><i class="fas fa-home"></i> Home</a> | 
+        {{#if user}}
+        <span class="user-info"><i class="fas fa-user"></i> {{user.nome}}</span> | 
+        {{/if}}
+        <a href="#" id="logoutButton"><i class="fas fa-sign-out-alt"></i> Logout</a>
+      </nav>
+    </div>
+    
+    <!-- Sezione API Calcio -->
+    <div class="api-section">
+      <h2>Football Data API</h2>
+      <div class="api-controls">
+        <select id="leagueSelect">
+          <option value="">Seleziona una lega</option>
+          {{#each leagues}}
+            <option value="{{this.code}}">{{this.name}}</option>
+          {{else}}
+            <option value="SA">Serie A</option>
+            <option value="PL">Premier League</option>
+            <option value="PD">La Liga</option>
+            <option value="BL1">Bundesliga</option>
+            <option value="FL1">Ligue 1</option>
+          {{/each}}
+        </select>
+        <select id="dataType">
+          <option value="matches">Partite</option>
+          <option value="standings">Classifica</option>
+          <option value="teams">Squadre</option>
+        </select>
+        <button class="btn" id="fetchFootballData"><i class="fas fa-futbol"></i> Ottieni dati</button>
+      </div>
+      <div class="api-results" id="footballResults">
+        <p>Seleziona una lega e un tipo di dato per visualizzare i risultati.</p>
+      </div>
+    </div>
+    
+    <!-- Sezione API Meteo -->
+    <div class="api-section">
+      <h2>Weather API</h2>
+      <div class="api-controls">
+        <input type="text" id="cityInput" placeholder="Inserisci una città" />
+        <button class="btn" id="fetchWeather"><i class="fas fa-cloud-sun"></i> Ottieni meteo</button>
+      </div>
+      <div class="api-results" id="weatherResults">
+        <p>Inserisci una città per visualizzare le previsioni meteo.</p>
+      </div>
+    </div>
+  </div>
+  
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/websocket.js"></script>
+  <script src="/js/api-dashboard.js"></script>
+</body>
+</html>

@@ -45,7 +45,7 @@
  *               items:
  *                 $ref: '#/components/schemas/Calciatore'
  * 
- * /api/admin/users:
+ * /api/users:
  *   get:
  *     summary: Restituisce tutti gli utenti
  *     description: Recupera tutti gli utenti dal database (solo admin).
@@ -102,7 +102,7 @@
  *       403:
  *         description: Non autorizzato
  * 
- * /api/admin/users/{id}:
+ * /api/users/{id}:
  *   put:
  *     summary: Aggiorna un utente
  *     description: Aggiorna i dati di un utente esistente (solo admin).
@@ -162,7 +162,7 @@
  *       403:
  *         description: Non autorizzato
  * 
- * /api/admin/google-users:
+ * /api/google-users:
  *   get:
  *     summary: Restituisce tutti gli utenti Google
  *     description: Recupera tutti gli utenti autenticati con Google (solo admin).
@@ -174,7 +174,7 @@
  *       403:
  *         description: Non autorizzato
  * 
- * /api/admin/google-users/{id}:
+ * /api/google-users/{id}:
  *   put:
  *     summary: Aggiorna un utente Google
  *     description: Aggiorna i dati di un utente Google (solo admin).
@@ -250,6 +250,14 @@ const isAdmin = (req, res, next) => {
     }
 };
 
+// Middleware per verificare l'autenticazione
+const isAuthenticated = (req, res, next) => {
+    if (req.isAuthenticated() || req.session.user) {
+        return next();
+    }
+    res.status(401).json({ error: 'Non autenticato' });
+};
+
 // Funzione per impostare il database dall'esterno
 const setDb = (database) => {
     db = database;
@@ -287,7 +295,7 @@ router.get('/attaccanti', (req, res) => {
 // =========== ADMIN API =============
 
 // Recupera tutti gli utenti (admin)
-router.get('/admin/users', isAdmin, (req, res) => {
+router.get('/users', isAdmin, (req, res) => {
     if (!db) {
         return res.status(500).json({ error: 'Database non inizializzato' });
     }
@@ -301,8 +309,28 @@ router.get('/admin/users', isAdmin, (req, res) => {
     });
 });
 
+// Recupera un utente specifico (admin)
+router.get('/users/:id', isAdmin, (req, res) => {
+    if (!db) {
+        return res.status(500).json({ error: 'Database non inizializzato' });
+    }
+    
+    const userId = req.params.id;
+    const sql = 'SELECT * FROM utenti WHERE id = ?';
+    
+    db.get(sql, [userId], (err, row) => {
+        if (err) {
+            return res.status(500).json({ error: 'Errore nel recupero dell\'utente' });
+        }
+        if (!row) {
+            return res.status(404).json({ error: 'Utente non trovato' });
+        }
+        res.json(row);
+    });
+});
+
 // Crea un nuovo utente (admin)
-router.post('/admin/users', isAdmin, (req, res) => {
+router.post('/users', isAdmin, (req, res) => {
     if (!db) {
         return res.status(500).json({ error: 'Database non inizializzato' });
     }
@@ -338,7 +366,7 @@ router.post('/admin/users', isAdmin, (req, res) => {
 });
 
 // Aggiorna un utente esistente (admin)
-router.put('/admin/users/:id', isAdmin, (req, res) => {
+router.put('/users/:id', isAdmin, (req, res) => {
     if (!db) {
         return res.status(500).json({ error: 'Database non inizializzato' });
     }
@@ -410,45 +438,41 @@ router.put('/admin/users/:id', isAdmin, (req, res) => {
             }
             return res.json({ 
                 success: true, 
-                message: 'Utente aggiornato con successo'
+                message: 'Utente aggiornato con successo',
+                changes: this.changes
             });
         });
     });
 });
 
 // Elimina un utente (admin)
-router.delete('/admin/users/:id', isAdmin, (req, res) => {
+router.delete('/users/:id', isAdmin, (req, res) => {
     if (!db) {
         return res.status(500).json({ error: 'Database non inizializzato' });
     }
     
     const userId = req.params.id;
-
-    // Verifica se l'utente esiste
-    const checkSql = 'SELECT * FROM utenti WHERE id = ?';
-    db.get(checkSql, [userId], (err, row) => {
+    
+    const sql = 'DELETE FROM utenti WHERE id = ?';
+    db.run(sql, [userId], function(err) {
         if (err) {
-            return res.status(500).json({ error: 'Errore durante la verifica dell\'utente' });
+            return res.status(500).json({ error: 'Errore durante l\'eliminazione dell\'utente' });
         }
-        if (!row) {
+        if (this.changes === 0) {
             return res.status(404).json({ error: 'Utente non trovato' });
         }
-
-        const deleteSql = 'DELETE FROM utenti WHERE id = ?';
-        db.run(deleteSql, [userId], function(err) {
-            if (err) {
-                return res.status(500).json({ error: 'Errore durante l\'eliminazione dell\'utente' });
-            }
-            return res.json({ 
-                success: true, 
-                message: 'Utente eliminato con successo'
-            });
+        return res.json({ 
+            success: true, 
+            message: 'Utente eliminato con successo',
+            changes: this.changes
         });
     });
 });
 
+// === GOOGLE USERS API ===
+
 // Recupera tutti gli utenti Google (admin)
-router.get('/admin/google-users', isAdmin, (req, res) => {
+router.get('/google-users', isAdmin, (req, res) => {
     if (!db) {
         return res.status(500).json({ error: 'Database non inizializzato' });
     }
@@ -462,54 +486,71 @@ router.get('/admin/google-users', isAdmin, (req, res) => {
     });
 });
 
-// Aggiorna un utente Google (admin)
-router.put('/admin/google-users/:id', isAdmin, (req, res) => {
+// Recupera un utente Google specifico (admin)
+router.get('/google-users/:id', isAdmin, (req, res) => {
     if (!db) {
         return res.status(500).json({ error: 'Database non inizializzato' });
     }
     
     const userId = req.params.id;
-    const { nome, is_admin } = req.body;
+    const sql = 'SELECT * FROM utenti_google WHERE id = ?';
     
-    // Verifica se l'utente esiste
-    const checkSql = 'SELECT * FROM utenti_google WHERE id = ?';
-    db.get(checkSql, [userId], (err, row) => {
+    db.get(sql, [userId], (err, row) => {
         if (err) {
-            return res.status(500).json({ error: 'Errore durante la verifica dell\'utente Google' });
+            return res.status(500).json({ error: 'Errore nel recupero dell\'utente Google' });
         }
         if (!row) {
             return res.status(404).json({ error: 'Utente Google non trovato' });
         }
+        res.json(row);
+    });
+});
 
-        // Costruisci la query di aggiornamento dinamicamente
-        let updateFields = [];
-        let params = [];
-
-        if (nome) {
-            updateFields.push('nome = ?');
-            params.push(nome);
+// Cambia lo stato admin di un utente Google (admin)
+router.put('/google-users/:id/toggle-admin', isAdmin, (req, res) => {
+    if (!db) {
+        return res.status(500).json({ error: 'Database non inizializzato' });
+    }
+    
+    const userId = req.params.id;
+    const isAdminValue = req.body.is_admin ? 1 : 0;
+    
+    const sql = 'UPDATE utenti_google SET is_admin = ? WHERE id = ?';
+    db.run(sql, [isAdminValue, userId], function(err) {
+        if (err) {
+            return res.status(500).json({ error: 'Errore durante l\'aggiornamento dell\'utente Google' });
         }
-        if (is_admin !== undefined) {
-            updateFields.push('is_admin = ?');
-            params.push(is_admin ? 1 : 0);
+        if (this.changes === 0) {
+            return res.status(404).json({ error: 'Utente Google non trovato' });
         }
+        return res.json({ 
+            success: true, 
+            message: `Utente Google ${isAdminValue ? 'promosso ad amministratore' : 'rimosso da amministratore'}`,
+            changes: this.changes
+        });
+    });
+});
 
-        if (updateFields.length === 0) {
-            return res.status(400).json({ error: 'Nessun campo da aggiornare' });
+// Elimina un utente Google (admin)
+router.delete('/google-users/:id', isAdmin, (req, res) => {
+    if (!db) {
+        return res.status(500).json({ error: 'Database non inizializzato' });
+    }
+    
+    const userId = req.params.id;
+    
+    const sql = 'DELETE FROM utenti_google WHERE id = ?';
+    db.run(sql, [userId], function(err) {
+        if (err) {
+            return res.status(500).json({ error: 'Errore durante l\'eliminazione dell\'utente Google' });
         }
-
-        // Aggiungi l'ID utente come ultimo parametro
-        params.push(userId);
-
-        const updateSql = `UPDATE utenti_google SET ${updateFields.join(', ')} WHERE id = ?`;
-        db.run(updateSql, params, function(err) {
-            if (err) {
-                return res.status(500).json({ error: 'Errore durante l\'aggiornamento dell\'utente Google' });
-            }
-            return res.json({ 
-                success: true, 
-                message: 'Utente Google aggiornato con successo'
-            });
+        if (this.changes === 0) {
+            return res.status(404).json({ error: 'Utente Google non trovato' });
+        }
+        return res.json({ 
+            success: true, 
+            message: 'Utente Google eliminato con successo',
+            changes: this.changes
         });
     });
 });

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="logo-banner">
+        <div class="logo-container">
+            <i class="fas fa-futbol logo-icon"></i>
+            <span>KickMatch</span>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="welcome-card">
+            <h2>Completa il tuo profilo</h2>
+            <p class="intro-text">Mancano pochi dettagli per cominciare a utilizzare KickMatch</p>
+            
+            <div class="form-container">
+                <form id="profileForm" action="/api/completa-profilo" method="POST">
+                    <div class="input-group">
+                        <label for="cognome">Cognome</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-user"></i>
+                            <input type="text" id="cognome" name="cognome" value="{{userProfile.cognome}}" required>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="eta">Età</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-birthday-cake"></i>
+                            <input type="number" id="eta" name="eta" min="16" max="99" value="{{userProfile.eta}}" required>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="ruolo_preferito">Ruolo preferito</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-running"></i>
+                            <select id="ruolo_preferito" name="ruolo_preferito" required>
+                                <option value="">Seleziona un ruolo</option>
+                                {{#each ruoli}}
+                                    <option value="{{this}}" {{#if (eq ../userProfile.ruolo_preferito this)}}selected{{/if}}>{{this}}</option>
+                                {{else}}
+                                    <option value="Portiere" {{#if (eq ../userProfile.ruolo_preferito "Portiere")}}selected{{/if}}>Portiere</option>
+                                    <option value="Difensore" {{#if (eq ../userProfile.ruolo_preferito "Difensore")}}selected{{/if}}>Difensore</option>
+                                    <option value="Centrocampista" {{#if (eq ../userProfile.ruolo_preferito "Centrocampista")}}selected{{/if}}>Centrocampista</option>
+                                    <option value="Attaccante" {{#if (eq ../userProfile.ruolo_preferito "Attaccante")}}selected{{/if}}>Attaccante</option>
+                                {{/each}}
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="residenza">Città di residenza</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <input type="text" id="residenza" name="residenza" value="{{userProfile.residenza}}" required>
+                        </div>
+                    </div>
+                    
+                    {{#if errorMessage}}
+                    <div id="errorMsg" class="error">{{errorMessage}}</div>
+                    {{/if}}
+                    
+                    <button type="submit" class="btn-primary"><i class="fas fa-save"></i> Salva profilo</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>&copy; {{year}} KickMatch - Il calcio amatoriale non è mai stato così facile</p>
+    </footer>
+  
+    <script src="/js/completa-profilo.js"></script>
+</body>
+</html>

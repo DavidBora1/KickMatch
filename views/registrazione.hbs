@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="logo-banner">
+        <div class="logo-container">
+            <i class="fas fa-futbol logo-icon"></i>
+            <span>KickMatch</span>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="welcome-card">
+            <a href="/" class="back-link"><i class="fas fa-arrow-left"></i> Torna alla home</a>
+            <h2>Registrati su KickMatch</h2>
+            <p class="intro-text">Entra nella nostra community di calciatori amatoriali e trova la tua squadra ideale</p>
+
+            <div class="form-container">
+                <form id="registerForm">
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label for="nome">Nome</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-user"></i>
+                                <input type="text" id="nome" name="nome" placeholder="Il tuo nome" required>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="cognome">Cognome</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-user"></i>
+                                <input type="text" id="cognome" name="cognome" placeholder="Il tuo cognome" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label for="eta">Età</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-birthday-cake"></i>
+                                <input type="number" id="eta" name="eta" placeholder="La tua età" min="16" max="60" required>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="ruolo_preferito">Ruolo preferito</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-running"></i>
+                                <select id="ruolo_preferito" name="ruolo_preferito" required>
+                                    <option value="" disabled selected>Seleziona il tuo ruolo</option>
+                                    {{#each ruoli}}
+                                        <option value="{{this}}">{{this}}</option>
+                                    {{else}}
+                                        <option value="Portiere">Portiere</option>
+                                        <option value="Difensore">Difensore</option>
+                                        <option value="Centrocampista">Centrocampista</option>
+                                        <option value="Attaccante">Attaccante</option>
+                                    {{/each}}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="residenza">Città di residenza</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <input type="text" id="residenza" name="residenza" placeholder="Dove abiti?" required>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="email">Email</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-envelope"></i>
+                            <input type="email" id="email" name="email" placeholder="La tua email" required>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="password">Password</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" id="password" name="password" placeholder="Crea una password" required>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="confirmPassword">Conferma Password</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Conferma la password" required>
+                        </div>
+                    </div>
+
+                    <div class="terms-checkbox">
+                        <input type="checkbox" id="terms" name="terms" required>
+                        <label for="terms">Accetto i <a href="/terms">Termini di servizio</a> e la <a href="/privacy">Privacy Policy</a></label>
+                    </div>
+
+                    <button type="submit" class="btn-primary"><i class="fas fa-user-plus"></i> Crea Account</button>
+                    
+                    {{#if errorMessage}}
+                    <div id="message" class="error">{{errorMessage}}</div>
+                    {{/if}}
+                    
+                    {{#if successMessage}}
+                    <div id="message" class="success">{{successMessage}}</div>
+                    {{/if}}
+                </form>
+
+                <div class="login-link">
+                    <p>Hai già un account? <a href="/login">Accedi</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; {{year}} KickMatch - Il calcio amatoriale non è mai stato così facile</p>
+    </footer>
+
+    <script src="/js/script.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/websocket.js"></script>
+</body>
+</html>

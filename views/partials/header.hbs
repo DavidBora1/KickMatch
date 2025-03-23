@@ -1,0 +1,16 @@
+<div class="logo-banner">
+    <div class="logo-container">
+        <i class="fas fa-futbol logo-icon"></i>
+        <span>KickMatch</span>
+    </div>
+    {{#if user}}
+    <div class="user-nav">
+        <span class="user-info">Ciao, {{user.nome}}</span>
+        <a href="/api-dashboard">Dashboard</a>
+        {{#if user.is_admin}}
+        <a href="/admin">Admin</a>
+        {{/if}}
+        <a href="#" id="logoutButton">Logout</a>
+    </div>
+    {{/if}}
+</div>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+    <link rel="stylesheet" href="/css/style.css">
+    {{#if adminPage}}<link rel="stylesheet" href="/css/admin.css">{{/if}}
+    {{#if apiDashboard}}<link rel="stylesheet" href="/css/api-dashboard.css">{{/if}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Rimuovi gli include dei partial da qui -->
+    
+    {{{body}}}
+    
+    <!-- Rimuovi gli include dei partial da qui -->
+    
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/script.js"></script>
+    {{#if adminPage}}<script src="/js/admin.js"></script>{{/if}}
+    {{#if apiDashboard}}<script src="/js/api-dashboard.js"></script>{{/if}}
+    {{#if completaProfilo}}<script src="/js/completa-profilo.js"></script>{{/if}}
+    <script src="/js/websocket.js"></script>
+</body>
+</html>

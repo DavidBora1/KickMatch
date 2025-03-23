@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+
+<body>
+    <div class="logo-banner">
+        <div class="logo-container">
+            <i class="fas fa-futbol logo-icon"></i>
+            <span>KickMatch</span>
+        </div>
+    </div>
+    
+    <div class="hero-section">
+        <h1>Gioca. Organizza. <span class="accent-text">Vinci.</span></h1>
+        <p class="tagline">Trova la tua partita perfetta di calcio amatoriale</p>
+    </div>
+    
+    <div class="container">
+        <div class="welcome-card">
+            <h2>Benvenuto su KickMatch</h2>
+            <p class="intro-text">L'applicazione che ti permette di organizzare e partecipare a partite e tornei di calcio amatoriali nella tua zona.</p>
+
+            <!-- Pulsanti per Accedi e Registrati -->
+            <div class="action-buttons">
+                <button class="btn-primary" onclick="window.location.href='/login'"><i class="fas fa-sign-in-alt"></i> Accedi</button>
+                <button class="btn-secondary" onclick="window.location.href='/registrazione'"><i class="fas fa-user-plus"></i> Registrati</button>
+            </div>
+
+            <div class="feature-section">
+                <div class="feature">
+                    <i class="fas fa-users"></i>
+                    <h3>Trova Giocatori</h3>
+                    <p>Scopri calciatori nella tua zona</p>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-trophy"></i>
+                    <h3>Organizza Tornei</h3>
+                    <p>Crea eventi personalizzati</p>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <h3>Prenota Campi</h3>
+                    <p>Trova strutture disponibili</p>
+                </div>
+            </div>
+
+            <!-- Pulsanti AJAX per Visualizzare Calciatori -->
+            <div class="player-section">
+                <h3>Scopri i calciatori</h3>
+                <div class="filter-buttons">
+                    <button id="fetchAllPlayers" class="btn-filter active"><i class="fas fa-users"></i> Tutti</button>
+                    <button id="fetchAttackers" class="btn-filter"><i class="fas fa-running"></i> Attaccanti</button>
+                </div>
+
+                <!-- Contenitore Risultati AJAX -->
+                <div id="playersContainer" class="players-list">
+                    <p class="empty-state"><i class="fas fa-search"></i> Seleziona un'opzione per visualizzare i calciatori.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; {{year}} KickMatch - Il calcio amatoriale non è mai stato così facile</p>
+    </footer>
+
+    <!-- Collegamento a script.js per le funzionalità AJAX -->
+    <script src="/js/script.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/websocket.js"></script>
+</body>
+
+</html>

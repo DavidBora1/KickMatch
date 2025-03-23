@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="logo-banner">
+        <div class="logo-container">
+            <i class="fas fa-futbol logo-icon"></i>
+            <span>KickMatch</span>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="welcome-card">
+            <a href="/" class="back-link"><i class="fas fa-arrow-left"></i> Torna alla home</a>
+            <h2>Accedi a KickMatch</h2>
+            <p class="intro-text">Entra nel campo e inizia a giocare!</p>
+
+            <div class="form-container">
+                <form id="loginForm" action="/login" method="POST">
+                    <div class="input-group">
+                        <label for="loginEmail">Email</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-envelope"></i>
+                            <input type="email" id="loginEmail" name="email" required placeholder="La tua email" />
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="loginPassword">Password</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" id="loginPassword" name="password" required placeholder="La tua password" />
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-primary"><i class="fas fa-sign-in-alt"></i> Accedi</button>
+                    
+                    {{#if errorMessage}}
+                    <div id="message" class="error">{{errorMessage}}</div>
+                    {{/if}}
+                    
+                    {{#if successMessage}}
+                    <div id="message" class="success">{{successMessage}}</div>
+                    {{/if}}
+                </form>
+
+                <div class="separator">
+                    <span>oppure</span>
+                </div>
+
+                <a href="/auth/google" class="google-login">
+                    <i class="fab fa-google"></i> Accedi con Google
+                </a>
+
+                <div class="register-link">
+                    <p>Non hai un account? <a href="/registrazione">Registrati ora</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; {{year}} KickMatch - Il calcio amatoriale non è mai stato così facile</p>
+    </footer>
+
+    <script src="/js/script.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/websocket.js"></script>
+</body>
+
+</html>

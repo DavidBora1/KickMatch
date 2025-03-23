@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>KickMatch - Pannello Admin</h1>
+            <div class="header-right">
+                <span class="admin-badge"><i class="fas fa-shield-alt"></i> Amministratore</span>
+                <button id="add-user-btn" class="btn btn-primary"><i class="fas fa-user-plus"></i> Aggiungi Utente</button>
+                <button id="logout-btn" class="btn btn-outline"><i class="fas fa-sign-out-alt"></i> Logout</button>
+            </div>
+        </header>
+
+        <div class="tabs">
+            <div class="tab-buttons">
+                <button class="tab-btn active" data-tab="tab-users"><i class="fas fa-users"></i> Utenti Standard</button>
+                <button class="tab-btn" data-tab="tab-google-users"><i class="fab fa-google"></i> Utenti Google</button>
+            </div>
+
+            <div id="tab-users" class="tab-content active">
+                <div class="table-container">
+                    <table id="users-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nome</th>
+                                <th>Cognome</th>
+                                <th>Email</th>
+                                <th>Età</th>
+                                <th>Ruolo</th>
+                                <th>Residenza</th>
+                                <th>Tipo</th>
+                                <th>Azioni</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#if users}}
+                                {{#each users}}
+                                <tr>
+                                    <td>{{this.id}}</td>
+                                    <td>{{this.nome}}</td>
+                                    <td>{{this.cognome}}</td>
+                                    <td>{{this.email}}</td>
+                                    <td>{{this.eta}}</td>
+                                    <td>{{this.ruolo_preferito}}</td>
+                                    <td>{{this.residenza}}</td>
+                                    <td><span class="status-badge {{#if this.is_admin}}status-admin{{else}}status-user{{/if}}">{{#if this.is_admin}}Admin{{else}}Utente{{/if}}</span></td>
+                                    <td class="action-buttons">
+                                        <button class="action-btn edit-btn" data-id="{{this.id}}"><i class="fas fa-edit"></i></button>
+                                        <button class="action-btn delete-btn" data-id="{{this.id}}"><i class="fas fa-trash-alt"></i></button>
+                                    </td>
+                                </tr>
+                                {{/each}}
+                            {{else}}
+                                <tr>
+                                    <td colspan="9" class="empty-table">Nessun utente trovato</td>
+                                </tr>
+                            {{/if}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="tab-google-users" class="tab-content">
+                <div class="table-container">
+                    <table id="google-users-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Google ID</th>
+                                <th>Nome</th>
+                                <th>Email</th>
+                                <th>Tipo</th>
+                                <th>Azioni</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#if googleUsers}}
+                                {{#each googleUsers}}
+                                <tr>
+                                    <td>{{this.id}}</td>
+                                    <td>{{this.google_id}}</td>
+                                    <td>{{this.display_name}}</td>
+                                    <td>{{this.email}}</td>
+                                    <td><span class="status-badge {{#if this.is_admin}}status-admin{{else}}status-user{{/if}}">{{#if this.is_admin}}Admin{{else}}Utente{{/if}}</span></td>
+                                    <td class="action-buttons">
+                                        <button class="action-btn toggle-admin-btn" data-id="{{this.id}}" data-admin="{{this.is_admin}}">
+                                            <i class="fas {{#if this.is_admin}}fa-user-minus{{else}}fa-user-shield{{/if}}"></i>
+                                        </button>
+                                        <button class="action-btn delete-google-btn" data-id="{{this.id}}"><i class="fas fa-trash-alt"></i></button>
+                                    </td>
+                                </tr>
+                                {{/each}}
+                            {{else}}
+                                <tr>
+                                    <td colspan="6" class="empty-table">Nessun utente Google trovato</td>
+                                </tr>
+                            {{/if}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal per utenti standard -->
+    <div id="user-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-title">{{modalTitle}}</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            <form id="user-form">
+                <input type="hidden" id="user-id" name="user_id" value="">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="nome">Nome</label>
+                        <input type="text" id="nome" name="nome" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="cognome">Cognome</label>
+                        <input type="text" id="cognome" name="cognome" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="eta">Età</label>
+                        <input type="number" id="eta" name="eta" min="16" max="99" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="ruolo_preferito">Ruolo Preferito</label>
+                        <select id="ruolo_preferito" name="ruolo_preferito" required>
+                            <option value="">Seleziona un ruolo</option>
+                            {{#each ruoli}}
+                                <option value="{{this}}">{{this}}</option>
+                            {{else}}
+                                <option value="Portiere">Portiere</option>
+                                <option value="Difensore">Difensore</option>
+                                <option value="Centrocampista">Centrocampista</option>
+                                <option value="Attaccante">Attaccante</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="residenza">Residenza</label>
+                    <input type="text" id="residenza" name="residenza" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password">
+                    <p class="help-text" id="password-help">Lascia vuoto per mantenere la password esistente.</p>
+                </div>
+                <div class="form-group checkbox-group">
+                    <input type="checkbox" id="is_admin" name="is_admin">
+                    <label for="is_admin">Amministratore</label>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline modal-close-btn">Annulla</button>
+                    <button type="submit" class="btn btn-primary">Salva</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Modal di conferma eliminazione -->
+    <div id="delete-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Conferma Eliminazione</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            <p>Sei sicuro di voler eliminare questo utente? Questa azione non può essere annullata.</p>
+            <div class="modal-footer">
+                <button class="btn btn-outline modal-close-btn">Annulla</button>
+                <button id="confirm-delete" class="btn btn-danger">Elimina</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/websocket.js"></script>
+    <script src="/js/admin.js"></script>
+</body>
+</html>
