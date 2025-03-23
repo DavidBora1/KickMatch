@@ -1,0 +1,7 @@
+services:
+  kickmatch:
+    image: kickmatch
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
