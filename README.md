@@ -1,38 +1,162 @@
 # KickMatch
 
-# Prerequisiti
-- Docker: Assicurati di avere Docker installato sul tuo sistema.
-- (Opzionale) Docker Compose: Se preferisci gestire il container tramite Docker Compose.
+#  Guida all'Installazione di KickMatch con Docker
 
-# Configurazione delle Variabili d'Ambiente
-Per utilizzare l'autenticazione Google OAuth, è necessario impostare le seguenti variabili d'ambiente:
+Questa guida spiega come installare Docker, configurare Docker Compose e avviare l'applicazione KickMatch utilizzando Docker su vari sistemi operativi.
 
-- GOOGLE_CLIENT_ID
+## Prerequisiti
 
-- GOOGLE_CLIENT_SECRET
+Prima di iniziare, assicurati di avere quanto segue:
 
-Puoi impostare queste variabili direttamente nel comando docker run oppure creare un file .env nella radice del progetto con questo contenuto:
+### 1. Un computer con sistema operativo Windows, Linux o macOS
 
-GOOGLE_CLIENT_ID=API_KEY
-GOOGLE_CLIENT_SECRET=API_KEY
+### 2. Git (per scaricare il repository)
 
-# Costruzione dell'Immagine Docker
-Posizionati nella directory del progetto e costruisci l'immagine Docker con il seguente comando:
+Git è un sistema di controllo versione distribuito. Ti servirà per scaricare ("clonare") il repository del progetto da GitHub.
 
-docker build -t kickmatch .
+#### Download e Installazione di Git:
 
-# Avvio del Container
-Utilizzo del comando docker run
-Avvia il container passando le variabili d'ambiente:
+- **Windows**: Scarica l'installer di Git dal sito ufficiale: [Git per Windows](https://git-scm.com/download/win) ed esegui l'installazione. Durante l'installazione, puoi lasciare le opzioni predefinite, a meno che tu non abbia esigenze specifiche.
+- **Linux**: La maggior parte delle distribuzioni Linux ha Git nei repository ufficiali. Puoi installarlo con il gestore di pacchetti:
+  - **Ubuntu**:
+    ```bash
+    sudo apt update && sudo apt install git
+    ```
+- **macOS**: Puoi installare Git in diversi modi:
+  - **Homebrew (consigliato)**:
+    ```bash
+    brew install git
+    ```
+  - **Installer ufficiale**: Scarica l'installer dal sito ufficiale: [Git per Mac](https://git-scm.com/download/mac)
+  - **Xcode Command Line Tools**:
+    ```bash
+    xcode-select --install
+    ```
 
+#### Verifica dell'Installazione:
+
+Dopo l'installazione, apri un terminale e digita:
+
+```bash
+git --version
+```
+
+Dovresti vedere la versione di Git installata.
+
+### 3. Clonazione del Repository
+
+Una volta installato Git, scarica il codice del progetto da GitHub:
+
+```bash
+git clone https://github.com/DavidBora1/KickMatch.git
+cd KickMatch
+```
+
+Questo comando creerà una nuova cartella con il codice del progetto.
+
+### 4. Docker e Docker Compose
+
+L'applicazione viene eseguita in un container Docker. Assicurati di avere Docker e Docker Compose installati.
+
+#### Installazione di Docker
+
+- **Windows**:
+
+  1. Scarica Docker Desktop da [qui](https://www.docker.com/products/docker-desktop/).
+  2. Installa Docker Desktop e avvialo.
+  3. Verifica l'installazione con:
+     ```bash
+     docker --version
+     ```
+
+- **macOS**:
+
+  1. Scarica Docker Desktop da [qui](https://www.docker.com/products/docker-desktop/).
+  2. Installa Docker e avvialo.
+  3. Verifica l'installazione con:
+     ```bash
+     docker --version
+     ```
+
+- **Linux (Ubuntu)**:
+
+  1. Aggiorna il database dei pacchetti:
+     ```bash
+     sudo apt update
+     ```
+  2. Installa Docker:
+     ```bash
+     sudo apt install docker.io
+     ```
+  3. Abilita e avvia Docker:
+     ```bash
+     sudo systemctl enable --now docker
+     ```
+  4. Verifica l'installazione con:
+     ```bash
+     docker --version
+     ```
+
+#### Installazione di Docker Compose (solo per Linux)
+
+- **Windows e macOS**: Docker Compose è incluso in Docker Desktop.
+- **Linux (Ubuntu)**:
+  ```bash
+  sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+  sudo chmod +x /usr/local/bin/docker-compose
+  ```
+  Verifica l'installazione con:
+  ```bash
+  docker-compose --version
+  ```
+
+## Configurazione del file .env
+
+Il file `.env` contiene le variabili d'ambiente necessarie per configurare l'applicazione KickMatch.
+
+### Creazione del file .env
+
+Nella cartella del progetto, crea un file chiamato `.env` e incolla il seguente contenuto:
+
+```env
+GOOGLE_CLIENT_ID=TUO_GOOGLE_CLIENT_ID
+GOOGLE_CLIENT_SECRET=TUO_GOOGLE_CLIENT_SECRET
+```
+
+Sostituisci `TUO_GOOGLE_CLIENT_ID` e `TUO_GOOGLE_CLIENT_SECRET` con le credenziali ottenute da Google.
+
+### Ottenere le credenziali Google OAuth
+
+1. Visita [Google Cloud Console](https://console.cloud.google.com/).
+2. Crea un nuovo progetto (se non ne hai già uno).
+3. Vai su **APIs & Services** > **Credentials**.
+4. Clicca su **Create Credentials** e seleziona **OAuth client ID**.
+5. Scegli **Web application** come tipo di applicazione.
+6. Nella sezione **Authorized redirect URIs**, aggiungi:
+   ```
+   http://localhost:3000/auth/google/callback
+   ```
+7. Dopo la creazione, copia il **Client ID** e il **Client Secret**.
+
+## Avvio di KickMatch con Docker
+
+Hai due opzioni per avviare l'applicazione KickMatch: con `docker run` o con `docker-compose`.
+
+### Opzione 1: Avvio con `docker run`
+
+```bash
 docker run -d --name kickmatch-container -p 3000:3000 \
-  -e GOOGLE_CLIENT_ID=975436346259-i2rlgtgeoq9nkb7sf15pdl4hq899vt46.apps.googleusercontent.com \
-  -e GOOGLE_CLIENT_SECRET=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 \
+  -e GOOGLE_CLIENT_ID=TUO_GOOGLE_CLIENT_ID \
+  -e GOOGLE_CLIENT_SECRET=TUO_GOOGLE_CLIENT_SECRET \
   kickmatch
+```
 
-# Utilizzo di Docker Compose (Opzionale)
-Se preferisci utilizzare Docker Compose, crea un file docker-compose.yml con il seguente contenuto:
+### Opzione 2: Avvio con Docker Compose
 
+Crea un file `docker-compose.yml` con il seguente contenuto:
+
+```yaml
+version: '3'
 services:
   kickmatch:
     image: kickmatch
@@ -40,13 +164,48 @@ services:
       - "3000:3000"
     env_file:
       - .env
+```
 
 Avvia il container con:
 
+```bash
 docker-compose up -d
+```
 
-# Verifica
-Apri il browser e visita http://localhost:3000/ per verificare che l'applicazione sia in esecuzione correttamente.
+## Accesso all'Applicazione
+
+Una volta avviata, puoi accedere a KickMatch all'indirizzo:
+[http://localhost:3000/](http://localhost:3000/)
+
+## Risoluzione dei Problemi
+
+### Verifica dei Log del Container
+
+Se riscontri problemi, puoi visualizzare i log del container con:
+
+```bash
+docker logs kickmatch-container
+```
+
+### Pulizia delle Credenziali Esposte
+
+Se accidentalmente hai pubblicato le tue credenziali nel repository:
+
+1. Rimuovi il segreto dai file.
+2. Cancella la cronologia dei commit usando [BFG Repo-Cleaner](https://rtyley.github.io/bfg-repo-cleaner/).
+3. Revoca e genera nuove credenziali da [Google Cloud Console](https://console.cloud.google.com/).
+
+## Risorse Utili
+
+- [Documentazione Docker](https://docs.docker.com/)
+- [Documentazione Node.js](https://nodejs.org/en/docs/)
+- [Google Cloud Console](https://console.cloud.google.com/)
+
+---
+
+Seguendo queste istruzioni, sarai in grado di configurare e avviare KickMatch in modo sicuro ed efficace.
+
+
 
 ## Descrizione
 **KickMatch** è un'app innovativa pensata per facilitare l'organizzazione e la partecipazione a partite di calcio amatoriale e tornei. La piattaforma offre un luogo centralizzato dove i giocatori di tutti i livelli possono trovare partite e tornei locali, unirsi a squadre, o organizzare eventi personalizzati. KickMatch semplifica la gestione delle squadre, la prenotazione dei campi e il coordinamento degli eventi, offrendo una soluzione completa per gli appassionati di calcio amatoriale.
